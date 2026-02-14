@@ -11,12 +11,14 @@ public class BookingEndPoints {
 	public Response create_Booking(Booking_Payload payload) {
 
 		Response response = RestAssured.given()
-				.accept(ContentType.JSON)
-				.contentType(ContentType.JSON)
-				.body(payload)
+		        .contentType(ContentType.JSON)
+		        .accept(ContentType.JSON)
+		        .header("Content-Type","application/json")
+		        .header("Accept","application/json")
+		        .body(payload)
 
-				.when()
-				.post(api_routes.Create_Booking_Url);
+		        .when()
+		        .post(api_routes.Create_Booking_Url);
 
 
 		return response;
@@ -27,6 +29,7 @@ public class BookingEndPoints {
 		Response response = RestAssured.given()
 				.accept(ContentType.JSON)
 				.contentType(ContentType.JSON)
+				.header("Accept","application/json")
 				
 				.when()
 				.get(api_routes.Get_Booking_Url+BookingID);
@@ -35,12 +38,14 @@ public class BookingEndPoints {
 		return response;
 	}
 	
-	public Response update_Booking(Booking_Payload payload, int BookingID,String Cookie) {
+	public Response update_Booking(Booking_Payload payload, int BookingID,String token) {
 		
 		Response response = RestAssured.given()
 				.accept(ContentType.JSON)
 				.contentType(ContentType.JSON)
-				.header("Cookie","token="+Cookie+"")
+				.header("Cookie", "token=" + token)
+				.header("Content-Type","application/json")
+		        .header("Accept","application/json")
 				.body(payload)
 				
 				.when()
@@ -50,14 +55,17 @@ public class BookingEndPoints {
 		return response;
 	}
 	
-	public Response delete_Booking(int BookingID) {
+	public Response delete_Booking(int BookingID,String token) {
 		
 		Response response = RestAssured.given()
 				.accept(ContentType.JSON)
 				.contentType(ContentType.JSON)
+				.header("Content-Type","application/json")
+		        .header("Accept","application/json")
+				.header("Cookie", "token=" + token)
 				
 				.when()
-				.delete(api_routes.Delete_Booking_Url);
+				.delete(api_routes.Delete_Booking_Url+BookingID);
 		
 		
 		return response;
